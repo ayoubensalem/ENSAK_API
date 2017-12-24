@@ -1,19 +1,26 @@
 # -*- coding: utf-8 -*-
-from scrapy.crawler import CrawlerProcess
 from flask import Flask
 from flask_restful import Resource, Api
+from flask_caching import Cache
 from news import NewsSpider
 from galerie import GalerieSpider
-import json
 import scrapy.crawler as crawler
 from multiprocessing import Process, Queue
 from twisted.internet import reactor
-from scrapy.crawler import CrawlerRunner
 
 app = Flask(__name__)
 api = Api(app)
+cache = Cache(app, config={'CACHE_TYPE': 'SIMPLE'})
+# cache = Cache(app, config={
+#     'CACHE_TYPE': 'redis',
+#     'CACHE_KEY_PREFIX': 'fcache',
+#     'CACHE_REDIS_HOST': 'localhost',
+#     'CACHE_REDIS_PORT': '6379',
+#     'CACHE_REDIS_URL': 'redis://localhost:6379'
+#     })
 
 class News(Resource):
+    @cache.cached(timeout=600)
     def get(self):
         data = []
         def f(q):
@@ -46,6 +53,7 @@ class News(Resource):
 
 
 class Galerie(Resource):
+    @cache.cached(timeout=600)
     def get(self):
         data = []
         def f(q):
