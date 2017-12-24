@@ -42,3 +42,4 @@ class NewsSpider(scrapy.Spider):
 
 
 
+
