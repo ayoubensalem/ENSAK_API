@@ -10,14 +10,7 @@ from twisted.internet import reactor
 
 app = Flask(__name__)
 api = Api(app)
-cache = Cache(app, config={'CACHE_TYPE': 'SIMPLE'})
-# cache = Cache(app, config={
-#     'CACHE_TYPE': 'redis',
-#     'CACHE_KEY_PREFIX': 'fcache',
-#     'CACHE_REDIS_HOST': 'localhost',
-#     'CACHE_REDIS_PORT': '6379',
-#     'CACHE_REDIS_URL': 'redis://localhost:6379'
-#     })
+cache = Cache(app, config={'CACHE_TYPE': 'simple'})
 
 class News(Resource):
     @cache.cached(timeout=600)
