@@ -8,6 +8,7 @@ import json
 import scrapy.crawler as crawler
 from multiprocessing import Process, Queue
 from twisted.internet import reactor
+from scrapy.crawler import CrawlerRunner
 
 
 app = Flask(__name__)
