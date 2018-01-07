@@ -4,9 +4,12 @@ from flask_restful import Resource, Api
 from flask_caching import Cache
 from news import NewsSpider
 from galerie import GalerieSpider
+from article import ArticleSpider
+from gallery import GallerySpider
 import scrapy.crawler as crawler
 from multiprocessing import Process, Queue
 from twisted.internet import reactor
+from flask_restful import reqparse
 
 app = Flask(__name__)
 api = Api(app)
@@ -33,19 +36,8 @@ class News(Resource):
         p.join()
         return {'news': result}
 
-        # runner = CrawlerRunner()
-        # d = runner.crawl(NewsSpider)
-        # d.addBoth(lambda _: reactor.stop())
-        # reactor.run()
-        # process = CrawlerProcess({
-        #     'USER_AGENT': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1)'
-        # })
-        # process.crawl(NewsSpider)
-        # process.start()
 
-
-
-class Galerie(Resource):
+class Galleries(Resource):
     @cache.cached(timeout=600)
     def get(self):
         data = []
@@ -55,7 +47,7 @@ class Galerie(Resource):
                 deferred = runner.crawl(GalerieSpider)
                 deferred.addBoth(lambda _: reactor.stop())
                 reactor.run()
-                q.put(GalerieSpider.getNews())
+                q.put(GalerieSpider.getGaleries())
             except Exception as e:
                 q.put(e)
 
@@ -64,12 +56,59 @@ class Galerie(Resource):
         p.start()
         result = q.get()
         p.join()
-        return {'news': result}
+        return {'galeries': result}
+
+class Article(Resource):
+    def get(self, name):
+        ArticleSpider.start_urls = ['http://ensa.uit.ac.ma/{}'.format(name)]
+        data = []
+        def f(q):
+            try:
+                runner = crawler.CrawlerRunner()
+                deferred = runner.crawl(ArticleSpider)
+                deferred.addBoth(lambda _: reactor.stop())
+                reactor.run()
+                q.put(ArticleSpider.getArticle())
+            except Exception as e:
+                q.put(e)
+
+        q = Queue()
+        p = Process(target=f, args=(q,))
+        p.start()
+        result = q.get()
+        p.join()
+        return result
+
+class Gallery(Resource):
+    def get(self, name):
+        GallerySpider.start_urls = ['http://ensa.uit.ac.ma/gallerie/{}'.format(name)]
+        data = []
+        def f(q):
+            try:
+                runner = crawler.CrawlerRunner()
+                deferred = runner.crawl(GallerySpider)
+                deferred.addBoth(lambda _: reactor.stop())
+                reactor.run()
+                q.put(GallerySpider.getGallery())
+            except Exception as e:
+                q.put(e)
+
+        q = Queue()
+        p = Process(target=f, args=(q,))
+        p.start()
+        result = q.get()
+        p.join()
+        return {'images': result}
 
 
 
-api.add_resource(News, '/news')
-api.add_resource(Galerie, '/galerie')
+
+
+api.add_resource(News, '/articles')
+api.add_resource(Article, '/articles/<name>')
+api.add_resource(Galleries, '/galleries')
+api.add_resource(Gallery, '/galleries/<name>')
+
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(port=5000, debug=True)
