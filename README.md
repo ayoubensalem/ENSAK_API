@@ -17,5 +17,7 @@ Flask-Cache is used for caching response  :
 ---
 
 > Endpoints : 
- - /news
- - /galerie
+ - /articles
+ - /articles/<name>
+ - /galleries
+ - /galleries/<name>
