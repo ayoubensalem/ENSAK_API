@@ -5,8 +5,10 @@ A simple API under construction, using FLASK-RESTful and Scrapy framework.
 Entry file : **app.py** where all the resources are defined.
 
 Scrapy Spiders : 
- * news : *news.py*
- * galerie : *galerie.py*
+ * Articles : *articles.py*
+ * Galleries : *galleries.py*
+ * Article : *article.py*
+ * Gallerie : *gallerie.py*
 
 Flask-Cache is used for caching response  :
  - Type : simple ( You can use redis server, for more info check the docs. ) 
