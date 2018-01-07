@@ -101,9 +101,14 @@ class Gallery(Resource):
         return {'images': result}
 
 
+class Home(Resource):
+    def get(self):
+        return {'routes': ['/articles', '/articles/<name>', '/galleries', '/galleries/<name>']}
 
 
 
+
+api.add_resource(Home, '/')
 api.add_resource(News, '/articles')
 api.add_resource(Article, '/articles/<name>')
 api.add_resource(Galleries, '/galleries')
