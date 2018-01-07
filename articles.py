@@ -3,7 +3,7 @@ import scrapy
 
 
 class NewsSpider(scrapy.Spider):
-    name = 'news'
+    name = 'articles'
     allowed_domains = ['ensa.uit.ac.ma']
     start_urls = ['http://ensa.uit.ac.ma/category/actualites/']
     first_time = True

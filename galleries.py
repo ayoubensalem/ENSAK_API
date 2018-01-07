@@ -3,7 +3,7 @@ import scrapy
 from flask import jsonify
 
 class GalerieSpider(scrapy.Spider):
-    name = 'galerie'
+    name = 'galleries'
     allowed_domains = ['ensa.uit.ac.ma/galerie/']
     start_urls = ['http://ensa.uit.ac.ma/galerie/']
     counter = 0
