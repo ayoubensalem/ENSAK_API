@@ -2,8 +2,8 @@
 from flask import Flask
 from flask_restful import Resource, Api
 from flask_caching import Cache
-from news import NewsSpider
-from galerie import GalerieSpider
+from articles import NewsSpider
+from galleries import GalerieSpider
 from article import ArticleSpider
 from gallery import GallerySpider
 import scrapy.crawler as crawler
