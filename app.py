@@ -59,6 +59,7 @@ class Galleries(Resource):
         return {'galeries': result}
 
 class Article(Resource):
+    @cache.cached(timeout=600)
     def get(self, name):
         ArticleSpider.start_urls = ['http://ensa.uit.ac.ma/{}'.format(name)]
         data = []
@@ -80,6 +81,7 @@ class Article(Resource):
         return result
 
 class Gallery(Resource):
+    @cache.cached(timeout=600)
     def get(self, name):
         GallerySpider.start_urls = ['http://ensa.uit.ac.ma/gallerie/{}'.format(name)]
         data = []
