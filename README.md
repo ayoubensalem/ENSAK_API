@@ -24,3 +24,8 @@ Flask-Cache is used for caching response  :
  - /articles/{:name}
  - /galleries
  - /galleries/{:name}
+
+--- 
+Dependencies :
+
+`pip install -r requirements.txt`
