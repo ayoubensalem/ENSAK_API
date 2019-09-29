@@ -1,6 +1,6 @@
 # ENSAK API 
 
-A simple API under construction, using FLASK-RESTful and Scrapy framework.
+A simple API under construction for a mobile application : https://github.com/ayoubensalem/ENSAKenitra , using FLASK-RESTful and Scrapy framework.
 
 Entry file : **app.py** where all the resources are defined.
 
